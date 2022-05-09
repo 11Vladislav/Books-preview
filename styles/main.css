@@ -1,0 +1,107 @@
+body {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+.left_container {
+padding: 10px;
+width: 40%;
+background-color: tomato;
+border-radius: 8px;
+}
+
+.right_container {
+margin-left: 15px;
+padding: 10px;
+width: 60%;
+background-color: aqua;
+border-radius: 8px;
+}
+
+#root {
+    display: flex;
+}
+
+.title {
+color: black
+}
+.ul {
+list-style-type: none;
+}
+
+.btn_add {
+ background-color: black;
+ color: #fff;
+}
+
+.list {
+display: flex;
+color: #fff;
+}
+
+p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.edit_btn {
+ margin-top: 8px;
+margin-left: auto;
+background-color: #fff;
+border-radius: 4px;
+border: none;
+}
+
+.delete_btn {
+margin-left: 5px;
+margin-top: 8px;
+background-color: teal;
+color: #fff;
+border-radius: 4px;
+border: none;
+}
+
+label{
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin: 0 auto;
+}
+
+.add_book{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.input{
+    margin-bottom: 16px;
+    border-radius: 10px;
+}
+
+.save-btn{
+    padding: 8px;
+    background-color: teal;
+    color: #fff;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit_btn, .delete_btn, .btn_add{
+    cursor: pointer;
+}
+
+.text{
+    cursor: pointer;
+}
+
+.text:hover,
+.text:focus {
+    color: #d9d9d9;
+}
