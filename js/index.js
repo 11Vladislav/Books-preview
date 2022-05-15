@@ -119,62 +119,85 @@ function editBook(event) { // функция для редактирования
   const book = books.find((book) => event.target.parentNode.id === book.id); // получаем книгу из массива по id
   divRight.innerHTML = ""; // очищаем превью книги
   divRight.insertAdjacentHTML("afterbegin", createFormMarkup(book)); // выводим форму редактирования книги
-}
+  fillObject(book); // заполняем объект данными книги из localStorage
+  const saveBtn = document.querySelector(".save-btn") // получаем кнопку сохранения книги
+  saveBtn.addEventListener("click", onBtnSave) // добавляем обработчик клика на кнопку сохранения книги
 
-function deleteBook(event) { // функция для удаления книги
-  const books = JSON.parse(localStorage.getItem(BOOKS)); // получаем массив книг из localStorage
-  const book = books.filter((book) => event.target.parentNode.id !== book.id); // получаем массив книг без удаляемой
-  localStorage.setItem(BOOKS, JSON.stringify(book)); // записываем массив книг без удаляемой в localStorage
-  ulEl.innerHTML = ""; // очищаем список книг
-  createList(); // выводим список книг
-  if (divRight.innerHTML !== "") { // если превью книги не пустое
-    const divRightEl = document.querySelector(".preview"); // получаем элемент превью книги
-
-    if (divRightEl.id === event.target.parentNode.id) { // если удаляемая книга совпадает с превью книги
-      divRight.innerHTML = ""; // очищаем превью книги
+  function onBtnSave() { // функция для сохранения книги
+    for (let i = 0; i < books.length; i += 1) { // проходимся по массиву книг
+      if (books[i] === books.indexOf(book)) { // если нашли книгу в массиве
+        books.splice(books[i], 1, book) // удаляем книгу из массива и добавляем ее в массив по новому объекту
+      }
     }
-  }
-}
-function addBookFunc() { // функция для добавления книги
-   const newBook = { // создаем объект новой книги
-    id: `${Date.now()}`, // присваиваем id новой книги
-    author: "", // присваиваем автора новой книги
-    title: "", // присваиваем название новой книги
-    plot: "", // присваиваем описание новой книги
-    img: "", // присваиваем картинку новой книги
-  };
-  divRight.innerHTML = ""; // очищаем превью книги
-  divRight.insertAdjacentHTML("afterbegin", createFormMarkup(newBook)); // выводим форму добавления новой книги
-  fillObject(newBook); // заполняем объект новой книги
-  const saveBtnEl = document.querySelector(".save-btn"); // получаем элемент кнопки сохранения новой книги
-  saveBtnEl.addEventListener("click", saveBook); // добавляем обработчик события на кнопку сохранения новой книги
-
-  function saveBook() { // функция для сохранения новой книги
-    const books = JSON.parse(localStorage.getItem(BOOKS)); // получаем массив книг из localStorage
-    books.push(newBook); // добавляем новую книгу в массив 
-    localStorage.setItem(BOOKS, JSON.stringify(books)); // записываем массив книг в localStorage
+    localStorage.setItem(BOOKS, JSON.stringify(books)) // обновляем массив книг в localStorage
     ulEl.innerHTML = ""; // очищаем список книг
     createList(); // выводим список книг
-    renderPreiw(newBook); // выводим превью новой книги
+    renderPreiw(book); // выводим превью книги
+   setTimeout(() => alert("Book edit"), 2000) // выводим предупреждение об успешном сохранении книги
+    
   }
+
 }
 
-const createFormMarkup = (book) => { // функция для создания формы добавления или редактирования книги
-  return `<form class = 'add_book'>
+
+
+  function deleteBook(event) { // функция для удаления книги
+    const books = JSON.parse(localStorage.getItem(BOOKS)); // получаем массив книг из localStorage
+    const book = books.filter((book) => event.target.parentNode.id !== book.id); // получаем массив книг без удаляемой
+    localStorage.setItem(BOOKS, JSON.stringify(book)); // записываем массив книг без удаляемой в localStorage
+    ulEl.innerHTML = ""; // очищаем список книг
+    createList(); // выводим список книг
+    if (divRight.innerHTML !== "") { // если превью книги не пустое
+      const divRightEl = document.querySelector(".preview"); // получаем элемент превью книги
+
+      if (divRightEl.id === event.target.parentNode.id) { // если удаляемая книга совпадает с превью книги
+        divRight.innerHTML = ""; // очищаем превью книги
+      }
+    }
+  }
+  function addBookFunc() { // функция для добавления книги
+    const newBook = { // создаем объект новой книги
+      id: `${Date.now()}`, // присваиваем id новой книги
+      author: "", // присваиваем автора новой книги
+      title: "", // присваиваем название новой книги
+      plot: "", // присваиваем описание новой книги
+      img: "", // присваиваем картинку новой книги
+    };
+    divRight.innerHTML = ""; // очищаем превью книги
+    divRight.insertAdjacentHTML("afterbegin", createFormMarkup(newBook)); // выводим форму добавления новой книги
+    fillObject(newBook); // заполняем объект новой книги
+    const saveBtnEl = document.querySelector(".save-btn"); // получаем элемент кнопки сохранения новой книги
+    saveBtnEl.addEventListener("click", saveBook); // добавляем обработчик события на кнопку сохранения новой книги
+
+    function saveBook() { // функция для сохранения новой книги
+      const books = JSON.parse(localStorage.getItem(BOOKS)); // получаем массив книг из localStorage
+      books.push(newBook); // добавляем новую книгу в массив 
+      localStorage.setItem(BOOKS, JSON.stringify(books)); // записываем массив книг в localStorage
+      ulEl.innerHTML = ""; // очищаем список книг
+      createList(); // выводим список книг
+      renderPreiw(newBook); // выводим превью новой книги
+      setTimeout(() => {
+        alert("Книга успешно добавлена!")
+      }, 100); // выводим сообщение об успешном добавлении книги
+    }
+  }
+
+  const createFormMarkup = (book) => { // функция для создания формы добавления или редактирования книги
+    return `<form class = 'add_book'>
   <label>Author<input class='input' name = 'author' value ='${book.author}' type = 'text'></label>
   <label>Title<input class='input' name = 'title'  value ='${book.title}' type = 'text'></label>
   <label>Image<input class='input' name = 'img'  value ='${book.img}' type = 'text'></label>
   <label>Plot<input class='input' name = 'plot'  value ='${book.plot}'></label>
   <button class ='save-btn' type='button'>Save</button>
   </form>`;
-};
+  };
 
-function fillObject(book) { // функция для заполнения объекта новой книги
-  const inputsAll = document.querySelectorAll("input"); // получаем все поля формы
-  inputsAll.forEach((el) => { // перебираем все поля формы
-    el.addEventListener("input", addValue); // добавляем обработчик события на каждое поле формы
-  });
-  function addValue(event) { // функция для добавления значения в объект новой книги
-    return (book[event.target.name] = event.target.value); // добавляем значение в объект новой книги
+  function fillObject(book) { // функция для заполнения объекта новой книги
+    const inputsAll = document.querySelectorAll("input"); // получаем все поля формы
+    inputsAll.forEach((el) => { // перебираем все поля формы
+      el.addEventListener("input", addValue); // добавляем обработчик события на каждое поле формы
+    });
+    function addValue(event) { // функция для добавления значения в объект новой книги
+      return (book[event.target.name] = event.target.value); // добавляем значение в объект новой книги
+    }
   }
-}
